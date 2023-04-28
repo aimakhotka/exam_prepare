@@ -1,0 +1,1 @@
+REFRESH MATERIALIZED VIEW flights_tickets_passengers_mv;

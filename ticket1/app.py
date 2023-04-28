@@ -2,8 +2,15 @@ from flask import Flask, request, jsonify
 import psycopg2
 from dotenv import load_dotenv
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
+
+# настройка логирования
+handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
 
 # загрузка переменных окружения из файла .env
 load_dotenv()
@@ -30,6 +37,7 @@ cur = conn.cursor()
 # REST API метод для поиска по индексу
 @app.route('/search')
 def search():
+    app.logger.info('search request received')
     # получение параметров запроса из URL
     city_from = request.args.get('city_from')
     city_to = request.args.get('city_to')
