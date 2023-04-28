@@ -26,7 +26,7 @@ DB_PORT=5432
 ```
 5. Запустите контейнеры с помощью docker-compose командой:
 ```
-docker-compose up
+docker compose up
 ```
 Для запуска в фоновом режиме используйте флаг -d.
 
@@ -49,15 +49,15 @@ docker-compose down
 
 1. Поиск билетов из города "Moscow" в город "London":
 ```
-curl -X GET 'http://localhost:8000/search?city_from=Moscow&city_to=London'
+curl -X GET 'http://localhost:5000/search?city_from=Moscow&city_to=London'
 ```
 2. Поиск билетов из города "London" в город "New York":
 ```
-curl -X GET 'http://localhost:8000/search?city_from=London&city_to=New%20York'
+curl -X GET 'http://localhost:5000/search?city_from=London&city_to=New%20York'
 ```
 3. Поиск билетов из города "New York" в город "San Francisco":
 ```
-curl -X GET 'http://localhost:8000/search?city_from=New%20York&city_to=San%20Francisco'
+curl -X GET 'http://localhost:5000/search?city_from=New%20York&city_to=San%20Francisco'
 ```
 
 Ожидаемый результат для каждого запроса: список билетов (в виде JSON-объекта), соответствующих заданным параметрам городов отправления и прибытия. Например, для первого запроса ожидается следующий результат:
@@ -89,9 +89,5 @@ curl -X GET 'http://localhost:8000/search?city_from=New%20York&city_to=San%20Fra
     }
 ]
 ```
-
-
-
-
 
 </details>
