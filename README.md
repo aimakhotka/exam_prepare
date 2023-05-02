@@ -30,12 +30,12 @@ docker compose up
 ```
 Для запуска в фоновом режиме используйте флаг -d.
 
-6. Откройте веб-браузер и перейдите на http://localhost:8000/, чтобы использовать приложение.
+6. Откройте веб-браузер и сделайте запрос (примеры запросов ниже) на http://localhost:5000/, чтобы использовать приложение.
 
 7. Для остановки контейнеров используйте команду:
 
 ```
-docker-compose down
+docker compose down
 ```
 
 По умолчанию все данные, созданные приложением, хранятся в `postgres-data/`, которая является точкой монтирования для директории `/var/lib/postgresql/data` контейнера `postgres`. Если вы хотите удалить все данные и начать заново, просто удалите директорию `postgres-data/` перед запуском контейнеров.
@@ -49,15 +49,15 @@ docker-compose down
 
 1. Поиск билетов из города "Moscow" в город "London":
 ```
-curl -X GET 'http://localhost:5000/search?city_from=Moscow&city_to=London'
+curl -v 'http://localhost:5000/search?city_from=Moscow&city_to=London'
 ```
 2. Поиск билетов из города "London" в город "New York":
 ```
-curl -X GET 'http://localhost:5000/search?city_from=London&city_to=New%20York'
+curl -v 'http://localhost:5000/search?city_from=London&city_to=New%20York'
 ```
 3. Поиск билетов из города "New York" в город "San Francisco":
 ```
-curl -X GET 'http://localhost:5000/search?city_from=New%20York&city_to=San%20Francisco'
+curl -v 'http://localhost:5000/search?city_from=New%20York&city_to=San%20Francisco'
 ```
 
 Ожидаемый результат для каждого запроса: список билетов (в виде JSON-объекта), соответствующих заданным параметрам городов отправления и прибытия. Например, для первого запроса ожидается следующий результат:
@@ -88,6 +88,51 @@ curl -X GET 'http://localhost:5000/search?city_from=New%20York&city_to=San%20Fra
         "birth_date": "1985-02-15"    
     }
 ]
+```
+
+</details>
+
+## Проект ticket2
+
+<details>
+<summary> Инструкция по запуску </summary>
+
+Для запуска данного проекта необходимо выполнить следующие шаги:
+
+1. Установите Docker и Docker Compose на свой компьютер, если они еще не установлены. Инструкции по установке можно найти на официальных сайтах: https://docs.docker.com/get-docker/ и https://docs.docker.com/compose/install/.
+
+2. Склонируйте репозиторий на свой компьютер:
+
+```
+https://github.com/aimakhotka/exam_prepare.git
+```
+
+3. Перейдите в папку `ticket2`
+4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+
+```
+DB_NAME=airline_tickets
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=postgres
+DB_PORT=5432
+POSTGRES_DB=airline_tickets
+```
+5. Запустите контейнеры с помощью docker-compose командой:
+```
+docker compose up
+```
+Для запуска в фоновом режиме используйте флаг -d.
+
+6. Откройте веб-браузер и сделайте GET запрос http://localhost:5000/flights_tickets_passengers, чтобы использовать приложение. Например,
+```
+curl http://localhost:5000/flights_tickets_passengers
+```
+
+7. Для остановки и удаления контейнеров используйте команду:
+
+```
+docker compose down
 ```
 
 </details>
