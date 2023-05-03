@@ -4,18 +4,18 @@ curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: ap
   "aggregations": {
     "by_country": {
       "terms": {
-        "field": "manufacturer.country.name.keyword",
+        "field": "manufacturer.country.name",
         "size": 20
       },
       "aggregations": {
         "total_products": {
           "value_count": {
-            "field": "name.keyword"
+            "field": "name"
           }
         },
         "attribVal": {
           "terms": {
-            "field": "name.keyword"
+            "field": "name"
           }
         },
         "avg_price": {
@@ -30,3 +30,17 @@ curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: ap
 '
 
 /products/_count
+
+
+curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggregations": {
+      "attribVal": {
+      "terms": {
+        "field": "name"
+      }
+    }
+  }
+}
+'

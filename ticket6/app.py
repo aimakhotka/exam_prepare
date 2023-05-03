@@ -14,34 +14,39 @@ else:
 @app.route('/products/by_country', methods=['GET'])
 def get_products_by_country():
     query = {
-        "size": 0,
-        "aggs": {
-            "by_country": {
-                "terms": {
-                    "field": "manufacturer.country.name.keyword",
-                    "size": 10
-                },
-                "aggs": {
-                    "total_count": {
-                        "value_count": {
-                            "field": "name.keyword"
-                        }
-                    },
-                    "avg_price": {
-                        "avg": {
-                            "field": "price"
-                        }
-                    }
-                }
+      "size": 0,
+      "aggregations": {
+        "by_country": {
+          "terms": {
+            "field": "manufacturer.country.name",
+            "size": 20
+          },
+          "aggregations": {
+            "total_products": {
+              "value_count": {
+                "field": "name"
+              }
+            },
+            "attribVal": {
+              "terms": {
+                "field": "name"
+              }
+            },
+            "avg_price": {
+              "avg": {
+                "field": "price"
+              }
             }
+          }
         }
+      }
     }
 
     res = es.search(index="products", body=query)
     buckets = res['aggregations']['by_country']['buckets']
     result = {
         bucket['key']: {
-            'count': bucket['total_count']['value'], 
+            'count': bucket['total_products']['value'], 
             'avg_price': round(bucket['avg_price']['value'], 2)
         } for bucket in buckets
     }
