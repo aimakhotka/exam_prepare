@@ -206,3 +206,121 @@ docker compose down
 ```
 
 </details>
+
+## Проект ticket7
+
+<details>
+<summary> Инструкция по запуску </summary>
+
+4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+
+```
+APP_NAME=app
+ES_HOST=elasticsearch
+ES_PORT=9200
+```
+
+5. Запустите контейнеры с помощью docker-compose командой:
+```
+docker compose up
+```
+Для запуска в фоновом режиме используйте флаг -d.
+
+6. Выполните запрос для создания индекса:
+
+```
+curl -X PUT "localhost:9200/tickets" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+      "index": {
+          "number_of_shards": 1,
+          "number_of_replicas": 0
+      },
+      "analysis": {
+          "filter": {
+              "russian_stop": {
+                  "type": "stop",
+                  "stopwords": "_russian_"
+              },
+              "russian_stemmer": {
+                  "type": "stemmer",
+                  "language": "russian"
+              },
+              "my_synonym": {
+                  "type": "synonym",
+                  "synonyms": [
+                      "эконом => econom",
+                      "бизнес => buisness",
+                      "лайт => light"
+                  ]
+              },
+              "text_ngram_filter": {
+                  "type": "edge_ngram",
+                  "min_gram": 1,
+                  "max_gram": 10
+              }
+          },
+          "analyzer": {
+              "text_ru_analyzer": {
+                  "tokenizer": "standard",
+                  "filter": [
+                      "lowercase",
+                      "russian_stop",
+                      "russian_stemmer",
+                      "my_synonym"
+                  ]
+              },
+              "ngram_ru_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "standard",
+                  "filter": [
+                      "lowercase",
+                      "text_ngram_filter"
+                  ]
+              }
+          }
+      }
+  },
+  "mappings": {
+      "properties": {
+          "price": {
+              "type": "scaled_float",
+              "scaling_factor": 100
+          },
+          "grade": {
+              "type": "text",
+              "analyzer": "text_ru_analyzer"
+          },
+          "date": {
+              "type": "date"
+          },
+          "departure": {
+              "type": "text",
+              "analyzer": "ngram_ru_analyzer"
+          },
+          "arrival": {
+              "type": "text",
+              "analyzer": "ngram_ru_analyzer"
+          }
+      }
+  }
+}'
+```
+
+7. Выполните запрос для добавления продуктов в индекс:
+```
+curl -H "Content-Type: application/json" -XPOST "localhost:9200/products/_bulk?pretty" --data-binary "@json/add_products"
+```
+Вместо `json/add_products` подставьте путь к данному файлу из текущей папки.
+6. В Postman выполните GET запрос с указанием параметра arrival для частичного поиска билетов по городу прибытия. Например,
+```
+http://localhost:5000/elastic/city?arrival=Мос
+```
+Curl не поддерживает кириллицу, так что через него сделать запрос нельзя
+8. Для остановки контейнеров используйте команду:
+
+```
+docker compose down
+```
+
+</details>
