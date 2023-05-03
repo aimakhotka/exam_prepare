@@ -1,0 +1,24 @@
+GET /products/_search
+{
+  "size": 0,
+  "aggs": {
+    "by_country": {
+      "terms": {
+        "field": "manufacturer.country.name.keyword",
+        "size": 10
+      },
+      "aggs": {
+        "total_products": {
+          "value_count": {
+            "field": "name.keyword"
+          }
+        },
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}

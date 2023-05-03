@@ -1,0 +1,20 @@
+{ "index": { "_id": "1" } }
+{ "name": "Смартфон iPhone 13", "price": 99999, "manufacturer": { "name": "Apple", "founded": "2005-04-01", "country": { "name": "США", "language": "английский" } } }
+
+{ "index": { "_id": "2" } }
+{ "name": "Умная колонка Алиса", "price": 6000, "manufacturer": { "name": "Yandex", "founded": "2010-08-01", "country": { "name": "Россия", "language": "русский" } } }
+
+{ "index": { "_id": "3" } }
+{ "name": "Платье летнее Бабушкинское", "price": 500, "manufacturer": { "name": "Belarusian Knitwear", "founded": "2001-02-22", "country": { "name": "Беларусь", "language": "белорусский" } } }
+
+{ "index": { "_id": "4" } }
+{ "name": "Смартфон Mi 11", "price": 14999, "manufacturer": { "name": "Xiaomi", "founded": "2003-04-06", "country": { "name": "Россия", "language": "русский" } } }
+
+{ "index": { "_id": "5" } }
+{ "name": "Смартфон Samsung Galaxy S21", "price": 19900, "manufacturer": { "name": "Samsung", "founded": "1938-03-01", "country": { "name": "Беларусь", "language": "белорусский" } } }
+
+{ "index": { "_id": "6" } }
+{ "name": "Ноутбук Samsung Galaxy Book S", "price": 59900, "manufacturer": { "name": "Samsung", "founded": "1938-03-01", "country": { "name": "Беларусь", "language": "белорусский" } } }
+
+{ "index": { "_id": "7" } }
+{ "name": "Кофемашина Siemens EQ.9 plus connect s500", "price": 194990, "manufacturer": { "name": "Siemens", "founded": "1847-10-12", "country": { "name": "Германия", "language": "немецкий" } } }
