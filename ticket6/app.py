@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
 
 # Проверка подключения
