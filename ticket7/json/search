@@ -62,5 +62,4 @@ curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: app
 
 
 curl "http://localhost:5000/elastic/city"
-curl "http://localhost:5000/elastic/city?query='Мос'"
-curl "http://localhost:5000/elastic/city?arg=Мос"
+curl "http://localhost:5000/elastic/city?arrival=Мос"

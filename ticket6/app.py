@@ -11,7 +11,6 @@ if es.ping():
 else:
     print('Ошибка подключения')
 
-
 @app.route('/products/by_country', methods=['GET'])
 def get_products_by_country():
     query = {
@@ -118,16 +117,6 @@ def get_price_distibution():
         response[key] = count
 
     return jsonify(response)
-
-    # res = es.search(index="products", body=query)
-    # buckets = res['aggregations']['price_distribution']['buckets']
-    # result = {
-    #     bucket['key']: {
-    #         'count': bucket['count']['value'], 
-    #         'avg_price': round(bucket['avg_price']['value'], 2)
-    #     } for bucket in buckets
-    # }
-    # return jsonify(result)
 
 # запуск приложения
 if __name__ == '__main__':
