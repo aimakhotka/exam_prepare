@@ -11,10 +11,10 @@ def get_elastic_connection():
     return Elasticsearch(hosts=f'http://{host}:{port}')
 
 # Проверка подключения
-if get_elastic_connection().ping():
-    print('Подключение успешно')
-else:
-    print('Ошибка подключения')
+# if get_elastic_connection().ping():
+#     print('Подключение успешно')
+# else:
+#     print('Ошибка подключения')
 
 @app.route('/elastic/city', methods=['GET'])
 def users_match_search():
