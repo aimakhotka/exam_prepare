@@ -136,3 +136,27 @@ docker compose down
 ```
 
 </details>
+
+## Проект ticket2.2
+
+<details>
+<summary> Инструкция по запуску </summary>
+</details>
+
+## Проект ticket6
+
+<details>
+<summary> Инструкция по запуску </summary>
+</details>
+
+## Проект ticket7
+
+<details>
+<summary> Инструкция по запуску </summary>
+</details>
+
+## Проект ticket9
+
+<details>
+<summary> Инструкция по запуску </summary>
+</details>
