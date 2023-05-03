@@ -2,16 +2,16 @@ curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
 {
   "mappings": {
     "properties": {
-      "name": { "type": "text" },
+      "name": { "type": "keyword" },
       "price": { "type": "integer" },
       "manufacturer": {
         "properties": {
-          "name": { "type": "text" },
+          "name": { "type": "keyword" },
           "founded": { "type": "date", "format": "yyyy-MM-dd" },
           "country": {
             "properties": {
-              "name": { "type": "text" },
-              "language": { "type": "text" }
+              "name": { "type": "keyword" },
+              "language": { "type": "keyword" }
             }
           }
         }

@@ -1,4 +1,4 @@
-GET products/_search
+curl -X GET "http://localhost:9200/products/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "size": 0,
   "query": {
@@ -52,3 +52,4 @@ GET products/_search
     }
   }
 }
+'

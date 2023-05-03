@@ -1,0 +1,66 @@
+curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+      "match": {
+          "grade": {
+              "query": "бизнеса",
+              "analyzer": "text_ru_analyzer"
+          }
+      }
+  }
+}'
+
+curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "grade": {
+                "query": "Econom",
+                "analyzer": "text_ru_analyzer"
+            }
+        }
+    }
+}'
+
+curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "grade": {
+                "query": "Эконам",
+                "analyzer": "text_ru_analyzer",
+                "fuzziness": 1
+            }
+        }
+    }
+}'
+
+curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "departure": {
+                "query": "Мос",
+                "analyzer": "ngram_ru_analyzer"
+            }
+        }
+    }
+}'
+
+curl -X GET "http://localhost:9200/tickets/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "arrival": {
+                "query": "Красно",
+                "analyzer": "ngram_ru_analyzer"
+            }
+        }
+    }
+}'
+
+
+
+curl "http://localhost:5000/elastic/city"
+curl "http://localhost:5000/elastic/city?query='Мос'"
+curl "http://localhost:5000/elastic/city?arg=Мос"

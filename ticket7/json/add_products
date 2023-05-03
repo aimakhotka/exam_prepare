@@ -1,0 +1,6 @@
+{"index":{"_index":"tickets","_id":"1"}}
+{"price":"2500","grade":"Эконом","date":"2023-01-01","departure":"Сочи","arrival":"Санкт-Петербург"}
+{"index":{"_index":"tickets","_id":"2"}}
+{"price":"20000","grade":"Бизнес","date":"2023-03-02","departure":"Москва","arrival":"Санкт-Петербург"}
+{"index":{"_index":"tickets","_id":"3"}}
+{"price":"2500","grade":"Лайт","date":"2022-12-23","departure":"Екатеринбург","arrival":"Москва"}

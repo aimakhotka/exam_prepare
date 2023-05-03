@@ -165,31 +165,31 @@ docker compose up
 ```
 curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
 {
-"mappings": {
+  "mappings": {
     "properties": {
-    "name": { "type": "text" },
-    "price": { "type": "integer" },
-    "manufacturer": {
+      "name": { "type": "keyword" },
+      "price": { "type": "integer" },
+      "manufacturer": {
         "properties": {
-        "name": { "type": "text" },
-        "founded": { "type": "date", "format": "yyyy-MM-dd" },
-        "country": {
+          "name": { "type": "keyword" },
+          "founded": { "type": "date", "format": "yyyy-MM-dd" },
+          "country": {
             "properties": {
-            "name": { "type": "text" },
-            "language": { "type": "text" }
+              "name": { "type": "keyword" },
+              "language": { "type": "keyword" }
             }
+          }
         }
-        }
+      }
     }
-    }
-}
+  }
 }
 '
 ```
 
 7. Выполните запрос для добавления продуктов в индекс:
 ```
-curl -H "Content-Type: application/json" -XPOST "localhost:9200/products/_bulk?pretty" --data-binary "@path/to/add_products.json"
+curl -H "Content-Type: application/json" -XPOST "localhost:9200/products/_bulk?pretty" --data-binary "@ticket6/json/add_products"
 ```
 6. Откройте веб-страницу http://localhost:5000/products/by_country, чтобы получить расчет распределения количества и средней цены продуктов по странам.
 ```
