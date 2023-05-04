@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  postgres:
+    build:
+      dockerfile: ./Dockerfile-postgres
+    environment:
+      POSTGRESQL_DATABASE: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRESQL_POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRESQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRESQL_SHARED_PRELOAD_LIBRARIES: "pgaudit,pg_cron"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+  flyway:
+    image: flyway/flyway:9.17-alpine
+    volumes:
+      - ./sql:/flyway/sql
+      - .env:/flyway/conf/.env
+    command: "-url=jdbc:postgresql://postgres:5432/${DB_NAME} -user=${DB_USER} -password=${DB_PASSWORD} migrate"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  app:
+    build:
+      dockerfile: ./Dockerfile
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  clickhouse:
+    container_name: clickhouse
+    image: bitnami/clickhouse
+    environment:
+      CLICKHOUSE_ADMIN_USER: clickhouse
+      CLICKHOUSE_ADMIN_PASSWORD: clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse/init-replica.sh:/docker-entrypoint-initdb.d/init-click.sh
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

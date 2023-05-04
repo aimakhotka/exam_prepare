@@ -1,0 +1,15 @@
+clickhouse-client --user clickhouse --password clickhouse --allow_experimental_database_materialized_postgresql 1 --query "create database if not exists postgres_repl engine = MaterializedPostgreSQL('postgres:5432', 'tickets', 'postgres', 'postgres') settings materialized_postgresql_tables_list = 'flights,tickets,passengers,tickets_passengers';"
+
+clickhouse-client --user clickhouse --password clickhouse  -q "show databases;"
+
+clickhouse-client --user clickhouse --password clickhouse --database=postgres_repl --query "select * from tickets;"
+
+
+# Написать запрос в ClickHouse на расчет распределения количества билетов по ценовым группам с интервалом 1000.
+clickhouse-client --user clickhouse --password clickhouse --database=postgres_repl --query "SELECT count(*) AS count, floor(price/1000)*1000 AS price_group FROM tickets JOIN flights ON flights.id = tickets.flight_id WHERE flights.departure_city = 'Moscow' AND flights.arrival_city = 'Sochi' AND flights.departure_date = '2022-12-31' GROUP BY price_group ORDER BY price_group;"
+
+# Написать запрос на расчет распределения количества и средней цены билетов по датам.
+clickhouse-client --user clickhouse --password clickhouse --database=postgres_repl --query "SELECT toDate(f.departure_date) as date, COUNT(*) as num_tickets, AVG(t.price) as avg_price FROM flights f JOIN tickets t ON t.flight_id = f.id GROUP BY date ORDER BY date;"
+
+# Запрос для расчета распределения количества и средней цены билетов Москва-Сочи 31дек2022
+clickhouse-client --user clickhouse --password clickhouse --database=postgres_repl --query "SELECT toDate(departure_date) as date, count(*) as num_tickets, avg(price) as avg_price FROM flights JOIN tickets ON tickets.flight_id = flights.id WHERE departure_city = 'Moscow' AND arrival_city = 'Sochi' AND departure_date = '2022-12-31' GROUP BY date ORDER BY date"

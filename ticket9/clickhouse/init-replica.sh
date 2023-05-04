@@ -1,0 +1,1 @@
+clickhouse-client --user clickhouse --password clickhouse --allow_experimental_database_materialized_postgresql 1 --query "create database if not exists postgres_repl engine = MaterializedPostgreSQL('postgres:5432', 'tickets', 'postgres', 'postgres') settings materialized_postgresql_tables_list = 'flights,tickets,passengers,tickets_passengers';"
