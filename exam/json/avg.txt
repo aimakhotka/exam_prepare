@@ -1,0 +1,19 @@
+GET "http://localhost:9200/nalog/_search"
+
+// Подсчет общего количества людей и их средний доход
+
+{
+  "size": 0,
+  "aggregations": {
+    "total_people": {
+      "value_count": {
+        "field": "name"
+      }
+    },
+    "avg_dohod": {
+      "avg": {
+        "field": "dohod"
+      }
+    }
+  }
+}

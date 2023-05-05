@@ -1,0 +1,1 @@
+curl -H "Content-Type: application/json" -XPOST "localhost:9200/nalog/_bulk?pretty" --data-binary "@json/add_data"

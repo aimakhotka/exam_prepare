@@ -1,0 +1,12 @@
+curl -X PUT "localhost:9200/nalog" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "name": { "type": "keyword" },
+      "birth_date": { "type": "date", "format": "yyyy-MM-dd" },
+      "dohod": { "type": "integer" },
+      "city": { "type": "keyword" }
+      }
+    }
+  }
+'
