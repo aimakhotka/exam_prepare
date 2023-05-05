@@ -1,8 +1,6 @@
 # exam_prepare
 ## Сборник практических работ с Docker, PostgreSQL, ElasticSearch и немного Clickhouse в рамках подготовки к экзамену.
 
-----------------
-
 Для запуска проекта необходимо выполнить следующие шаги:
 
 1. Установите Docker и Docker Compose на свой компьютер, если они еще не установлены. Инструкции по установке можно найти на официальных сайтах: https://docs.docker.com/get-docker/ и https://docs.docker.com/compose/install/.
