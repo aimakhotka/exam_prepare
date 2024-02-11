@@ -1,27 +1,28 @@
 # exam_prepare
-## Сборник практических работ с Docker, PostgreSQL, ElasticSearch и немного Clickhouse в рамках подготовки к экзамену.
+## A collection of practical exercises covering Docker, PostgreSQL, ElasticSearch, and a bit of Clickhouse as part of exam preparation.
 
-Для запуска проекта необходимо выполнить следующие шаги:
+To run the project, follow these steps:
 
-1. Установите Docker и Docker Compose на свой компьютер, если они еще не установлены. Инструкции по установке можно найти на официальных сайтах: https://docs.docker.com/get-docker/ и https://docs.docker.com/compose/install/.
+Install Docker and Docker Compose on your computer if they are not already installed. Installation instructions can be found on the official websites: [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
-2. Склонируйте репозиторий на свой компьютер:
+2. Clone the repository to your computer:
 
 ```
 https://github.com/aimakhotka/exam_prepare.git
 ```
-3. Перейдите в папку нужного проекта. Далее следуйте инструкции по запуску и использованию конкретного проекта.
+3. Navigate to the directory of the desired project. Then follow the instructions for launching and using the specific project.
 
-Важно! Нельзя держать запущенным более одного проекта, т.к. для большинства приложений используются одини порты. После завершения работы с проектом с помощью Ctrl+C, дополнительно необходимо выполнить команду `docker compose down`, чтобы удалить контейнеры и освободить порты.
+Important! You cannot have more than one project running at a time because most applications use the same ports. After finishing work with the project, use Ctrl+C to stop it, and additionally, run the command `docker compose down` to remove the containers and free up the ports.
 
-## Проект ticket1
 
-База данных в PostgreSQL с автоматическим применением миграций flyway. REST API приложение на Python для поиска по индексу. Все разворачивается с помощью docker compose.
+## Project ticket1
+
+PostgreSQL database with automatic migration using Flyway. Python-based REST API application for index search. Everything is deployed using Docker Compose.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and populate it with environment variables according to your local configuration. Here's an example of how to fill the file: `.env`:
 
 ```
 DB_NAME=airline_tickets
@@ -30,30 +31,30 @@ DB_PASSWORD=postgres
 DB_HOST=localhost
 DB_PORT=5432
 ```
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the docker-compose command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the -d flag.
 
-6. Как проверить
+6. How to verify
 
-Вот несколько тестовых запросов для проверки функциональности REST API метода /search:
+Here are several test requests to verify the functionality of the REST API method `/search`:
 
-    1. Поиск билетов из города "Moscow" в город "London":
+    1. Search for tickets from the city "Moscow" to the city "London":
 
     curl -v 'http://localhost:5000/search?city_from=Moscow&city_to=London'
 
-    2. Поиск билетов из города "London" в город "New York":
+    2. Search for tickets from the city "London" to the city "New York":
 
     curl -v 'http://localhost:5000/search?city_from=London&city_to=New%20York'
 
-    3. Поиск билетов из города "New York" в город "San Francisco":
+    3. Search for tickets from the city "New York" to the city "San Francisco":
 
     curl -v 'http://localhost:5000/search?city_from=New%20York&city_to=San%20Francisco'
 
 
-Ожидаемый результат для каждого запроса: список билетов (в виде JSON-объекта), соответствующих заданным параметрам городов отправления и прибытия. Например, для первого запроса ожидается следующий результат:
+Expected result for each request: a list of tickets (in JSON format) matching the specified parameters of departure and arrival cities. For example, for the first request, the expected result is as follows:
 
 ```
 [    {        
@@ -83,21 +84,21 @@ docker compose up
 ]
 ```
 
-7. Для остановки контейнеров используйте команду:
+7. To stop the containers, use the command:
 
 ```
 docker compose down
 ```
 </details>
 
-## Проект ticket2
+## Project ticket2
 
-База данных в PostgreSQL с автоматическим применением миграций flyway и конкурентным обновлением материализованного представления по cron. REST API приложение на Python для поиска по индексу. Все разворачивается с помощью docker compose.
+A PostgreSQL database with automatic migration applying via Flyway and concurrent refreshing of materialized view per cron. A Python REST API application for indexing search. All deployed using Docker Compose.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and fill it with environment variables according to your local configuration. Here's an example of how to fill the file: `.env`:
 
 ```
 DB_NAME=airline_tickets
@@ -108,19 +109,19 @@ DB_PORT=5432
 POSTGRES_DB=airline_tickets
 ```
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
 
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the -d flag.
 
-6. Откройте веб-страницу http://localhost:5000/flights_tickets_passengers, чтобы получить материализованное представление, содержащее результат соединения по первичным/внешним ключам всех таблиц.
+6. Open the web page http://localhost:5000/flights_tickets_passengers to retrieve the materialized view containing the result of joining primary/foreign keys of all tables.
 ```
 curl http://localhost:5000/flights_tickets_passengers
 ```
 
-7. Для остановки и удаления контейнеров используйте команду:
+7. To stop and remove the containers, use the command:
 
 ```
 docker compose down
@@ -128,26 +129,26 @@ docker compose down
 
 </details>
 
-## Проект ticket2.2
+## Project ticket2.2
 
-Вариация проекта ticket2, но с другой БД.
-База данных в PostgreSQL с автоматическим применением миграций flyway и конкурентным обновлением материализованного представления по cron. REST API приложение на Python для поиска по индексу. Все разворачивается с помощью docker compose.
+A variation of the ticket2 project, but with a different database.
+A PostgreSQL database with automatic migration applying via Flyway and concurrent refreshing of materialized view per cron. A Python REST API application for indexing search. All deployed using Docker Compose.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the `-d` flag.
 
-6. Откройте веб-страницу http://localhost:5000/joined_data, чтобы получить материализованное представление, содержащее результат соединения по первичным/внешним ключам всех таблиц.
+6. Open the web page http://localhost:5000/joined_data to retrieve the materialized view containing the result of joining primary/foreign keys of all tables.
 ```
 curl http://localhost:5000/joined_data
 ```
 
-7. Для остановки контейнеров используйте команду:
+7. To stop the containers, use the command:
 
 ```
 docker compose down
@@ -155,14 +156,14 @@ docker compose down
 
 </details>
 
-## Проект ticket6
+## Project ticket6
 
-База данных в ElasticSearch и REST API приложение на Python с двумя методами для поиска и агрегации
+A database in Elasticsearch and a Python REST API application with two methods for search and aggregation.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and fill it with environment variables according to your local configuration. Here's an example of how to fill the `.env` file:
 
 ```
 APP_NAME=app
@@ -170,13 +171,13 @@ ES_HOST=elasticsearch
 ES_PORT=9200
 ```
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the `-d` flag.
 
-6. Выполните запрос для создания индекса:
+6. Execute the request to create an index:
 
 ```
 curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
@@ -203,19 +204,19 @@ curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
 '
 ```
 
-7. Выполните запрос для добавления продуктов в индекс:
+7. Execute the request to add products to the index.
 ```
 curl -H "Content-Type: application/json" -XPOST "localhost:9200/products/_bulk?pretty" --data-binary "@ticket6/json/add_products"
 ```
-8. Откройте веб-страницу http://localhost:5000/products/by_country, чтобы получить расчет распределения количества и средней цены продуктов по странам.
+8. Open the web page http://localhost:5000/products/by_country to obtain the calculation of the distribution of product quantities and average prices by country.
 ```
 curl http://localhost:5000/products/by_country
 ```
-9. Откройте веб-страницу http://localhost:5000/products/price_distibution, чтобы получить расчет распределения количества продуктов по ценовым группам с интервалом 5000.
+9. Open the web page http://localhost:5000/products/price_distribution to obtain the calculation of the distribution of product quantities by price groups with an interval of 5000.
 ```
 curl http://localhost:5000/products/price_distibution
 ```
-10. Для остановки контейнеров используйте команду:
+10. To stop the containers, use the command:
 
 ```
 docker compose down
@@ -223,14 +224,14 @@ docker compose down
 
 </details>
 
-## Проект ticket7
+## Project ticket7
 
-База данных в ElasticSearch и REST API приложение на Python с методом для поиска по переданному через параметр URL значению.
+A database in Elasticsearch and a Python REST API application with a method for searching based on a value passed through a URL parameter.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and fill it with environment variables according to your local configuration. Here's an example of how to fill the `.env` file:
 
 ```
 APP_NAME=app
@@ -238,13 +239,13 @@ ES_HOST=elasticsearch
 ES_PORT=9200
 ```
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the `-d` flag.
 
-6. Выполните запрос для создания индекса:
+6. Execute the request to create an index:
 
 ```
 curl -X PUT "localhost:9200/tickets" -H 'Content-Type: application/json' -d'
@@ -325,19 +326,19 @@ curl -X PUT "localhost:9200/tickets" -H 'Content-Type: application/json' -d'
 }'
 ```
 
-7. Выполните запрос для добавления продуктов в индекс:
+7. Execute the request to add products to the index, substituting the path to the file from the current directory.
 ```
 curl -H "Content-Type: application/json" -XPOST "localhost:9200/products/_bulk?pretty" --data-binary "@json/add_products"
 ```
-Вместо `json/add_products` подставьте путь к данному файлу из текущей папки.
+Instead of `json/add_products`, substitute the path to this file from the current directory.
 
-8. В Postman выполните GET запрос с указанием параметра arrival для частичного поиска билетов по городу прибытия. Например,
+8. In Postman, execute a GET request specifying the `arrival` parameter for a partial search of tickets by arrival city. For example:
 ```
 http://localhost:5000/elastic/city?arrival=Мос
 ```
-Curl не поддерживает кириллицу, так что через него сделать запрос нельзя.
+You cannot make a request directly via cURL as it does not support Cyrillic characters, and you will receive an empty response.
 
-9. Для остановки контейнеров используйте команду:
+9. To stop the containers, use the command:
 
 ```
 docker compose down
@@ -345,14 +346,14 @@ docker compose down
 
 </details>
 
-## Проект ticket9
+## Project ticket9
 
-База данных в PostgreSQL с flyway и cron, автоматически реплицирующаяся в ClickHouse. REST API метод для выполнения запроса в Clickhouse (расчет количества и средней цены билетов, сгруппированные по датам рейсов).
+A PostgreSQL database with Flyway and cron, automatically replicating to ClickHouse. REST API method for executing queries in ClickHouse (calculating the quantity and average price of tickets grouped by flight dates).
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and fill it with environment variables according to your local configuration. Here's an example of how to fill the `.env` file:
 
 ```
 DB_NAME=tickets
@@ -363,19 +364,19 @@ DB_PORT=5432
 POSTGRES_DB=tickets
 ```
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the `-d` flag.
 
-6. Выполните запрос к приложению, чтобы получить расчет распределения количества и средней цены билетов:
+6. Execute a request to the application to obtain the calculation of the distribution of ticket quantities and average prices.
 ```
 curl 'localhost:5000/tickets'
 ```
-В clickhouse/querys есть еще примеры запросов в Clickhouse.
+There are additional query examples in `clickhouse/querys`.
 
-7. Для остановки контейнеров используйте команду:
+7. To stop the containers, use the command:
 
 ```
 docker compose down
@@ -383,14 +384,14 @@ docker compose down
 
 </details>
 
-## Проект exam
+## Project exam
 
-База данных в ElasticSearch и два запроса.
+A database in Elasticsearch and two queries.
 
 <details>
-<summary> Инструкция по запуску </summary>
+<summary> Startup Instructions </summary>
 
-4. Создайте файл `.env` в корневой директории проекта и заполните его переменными окружения в соответствии с вашей локальной конфигурацией. Пример заполнения файла `.env`:
+4. Create a `.env` file in the project's root directory and fill it with environment variables according to your local configuration. Here's an example of how to fill the `.env` file:
 
 ```
 APP_NAME=app
@@ -398,13 +399,13 @@ ES_HOST=elasticsearch
 ES_PORT=9200
 ```
 
-5. Запустите контейнеры с помощью docker-compose командой:
+5. Launch the containers using the `docker-compose` command:
 ```
 docker compose up
 ```
-Для запуска в фоновом режиме используйте флаг -d.
+To run in detached mode, use the `-d` flag.
 
-6. Выполните запрос для создания индекса:
+6. Execute the request to create an index:
 
 ```
 curl -X PUT "localhost:9200/nalog" -H 'Content-Type: application/json' -d'
@@ -421,17 +422,18 @@ curl -X PUT "localhost:9200/nalog" -H 'Content-Type: application/json' -d'
 '
 ```
 
-7. Выполните запрос для добавления продуктов в индекс:
+7. Execute the request to add products to the index, substituting the path to the file from the current directory.
 ```
 curl -H "Content-Type: application/json" -XPOST "localhost:9200/nalog/_bulk?pretty" --data-binary "@json/add_data"
 ```
-Вместо `json/add_products` подставьте путь к данному файлу из текущей папки.
 
-8. Выполните запрос в ElasticSeach, чтобы получить расчет распределения количества налогоплательщиков и их среднего дохода (например, с помощью Postman):
+Instead of `json/add_products` , substitute the path to this file from the current directory.
+
+8. Execute the request in Elasticsearch to retrieve the calculation of the distribution of taxpayers and their average income (for example, using Postman):
 ```
 GET "http://localhost:9200/nalog/_search"
 
-// Подсчет общего количества людей и их средний доход
+// Calculating the total number of people and their average income.
 
 {
   "size": 0,
@@ -449,13 +451,13 @@ GET "http://localhost:9200/nalog/_search"
   }
 }
 ```
-Curl не поддерживает кириллицу, так что через него напрямую сделать запрос нельзя - вы будете получать пустой ответ.
+You cannot make a request directly via cURL as it does not support Cyrillic characters, and you will receive an empty response.
 
-9. Выполните запрос в ElasticSeach для распределения налогоплательщиков по группам дохода:
+9. Execute the request in Elasticsearch to distribute taxpayers by income groups:
 ```
 GET "http://localhost:9200/nalog/_search"
 
-// Распределение количества людей не из Москвы и Санкт-Петербурга и от 25 до 30 лет по группам дохода
+// Distribution of the number of people not from Moscow and Saint Petersburg, aged 25 to 30, by income groups.
 
 {
   "size": 0,
@@ -512,7 +514,7 @@ GET "http://localhost:9200/nalog/_search"
 }'
 ```
 
-10. Для остановки контейнеров используйте команду:
+10. To stop the containers, use the command:
 
 ```
 docker compose down
